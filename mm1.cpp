@@ -89,6 +89,7 @@ Mm1::Mm1(int msg_type)
             this->header["X-MMS-Message-Type"] = "MM1_retrieve.REQ";
             this->header["X-MMS-Transaction-ID"] = "d56g9q2c5n";
             this->header["X-MMS-MMS-Version"] = "1.0.0";
+            this->header["X-MMS-Content-Location"] = "txt.txt";
         break;
         case ACK_REQ:
             this->header_size = 5;
@@ -101,17 +102,25 @@ Mm1::Mm1(int msg_type)
             this->header["X-MMS-Message-Type"] = "MM1_forward.REQ";
             this->header["X-MMS-Transaction-ID"] = "d56g9q2c5n";
             this->header["X-MMS-MMS-Version"] = "1.0.0";
+            this->header["To"] = "123456@mms.comverse.com,12345678/TYPE=PLMN";
+            this->header["X-MMS-Content-Location"] = "txt.txt";
         break;
         case READ_REPLY_REC_REQ:
             this->header_size = 7;
             this->header["X-MMS-Message-Type"] = "MM1_read_reply_recipient.REQ";
             this->header["X-MMS-MMS-Version"] = "1.0.0";
+            this->header["To"] = "123456@mms.comverse.com,12345678/TYPE=PLMN";
+            this->header["From"] = "12356425868/TYPE=PLMN";
+            this->header["Message-ID"] = "<1234@1234>";
+            this->header["X-MMS-Read-Status"] = "readed";
         break;
         case MMBOX_STORE_REQ:
             this->header_size = 6;
             this->header["X-MMS-Message-Type"] = "MM1_mmbox_store.REQ";
             this->header["X-MMS-Transaction-ID"] = "d56g9q2c5n";
             this->header["X-MMS-MMS-Version"] = "1.0.0";
+            //类型未知
+            this->header["X-MMS-Message-Reference"] = " ";
         break;
         case MMBOX_VIEW_REQ:
             this->header_size = 10;
@@ -121,14 +130,18 @@ Mm1::Mm1(int msg_type)
         break;
         case MMBOX_UPLOAD_REQ:
             this->header_size = 14;
-            this->header["MM1_mmbox_upload.REQ"] = "MM1_mmbox_view.REQ";
+            this->header["X-MMS-Message-Type"] = "MM1_mmbox_upload.REQ";
             this->header["X-MMS-Transaction-ID"] = "d56g9q2c5n";
             this->header["X-MMS-MMS-Version"] = "1.0.0";
+            // 文本类型
+            this->header["Content-Type"] = "text/plain;Name=txt.txt;Charset=utf-8";
+            // Message body
         break;
         case MMBOX_DELETE_REQ:
             this->header_size = 4;
             this->header["X-MMS-Message-Type"] = "MM1_mmbox_delete.REQ";
             this->header["X-MMS-Transaction-ID"] = "d56g9q2c5n";
             this->header["X-MMS-MMS-Version"] = "1.0.0";
+            this->header["X-MMS-Request-Text"] = "000 Ok";
     }
 }
