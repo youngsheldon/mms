@@ -65,6 +65,17 @@ void Mm1::show()
     }
 }
 
+string Mm1::get_pdu()
+{
+    list<string>::iterator iter;
+    string pdu_data;
+    for(iter = this->pdu.begin(); iter != this->pdu.end(); ++iter)
+    {
+        pdu_data += *iter + "\r\n";
+    }
+    return pdu_data;
+}
+
 Mm1::Mm1(int msg_type)
 {
     this->msg_seq = msg_type;
@@ -144,4 +155,5 @@ Mm1::Mm1(int msg_type)
             this->header["X-MMS-MMS-Version"] = "1.0.0";
             this->header["X-MMS-Request-Text"] = "000 Ok";
     }
+    this->set_head();
 }

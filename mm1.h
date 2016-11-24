@@ -70,6 +70,7 @@ public:
     void set_head();
     void link_data(const string head_key[]);
     void show();
+    string get_pdu();
 public:
     map<string,string> header;
     list<string> pdu;

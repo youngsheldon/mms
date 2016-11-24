@@ -2,27 +2,17 @@
 * @Author: anchen
 * @Date:   2016-11-22 10:06:58
 * @Last Modified by:   anchen
-* @Last Modified time: 2016-11-22 22:59:04
+* @Last Modified time: 2016-11-23 15:28:39
 */
-
+#include "http_client.h"
 #include "mm1.h"
 
 int main()
 {
-    Mm1 obj1(SUBMIT_REQ);
-    obj1.set_head();
-    obj1.show();
-    Mm1 obj2(NOTIFI_RES);
-    obj2.set_head();
-    obj2.show();
-    Mm1 obj3(RETRIEVE_REQ);
-    obj3.set_head();
-    obj3.show();
-    Mm1 obj4(MMBOX_DELETE_REQ);
-    obj4.set_head();
-    obj4.show();
-    Mm1 obj5(FORWARD_REQ);
-    obj5.set_head();
-    obj5.show();
+    Mm1 mm(SUBMIT_REQ);
+    HttpClient obj("192.168.139.133",8888);
+    obj.connect_server();
+    obj.post(mm.get_pdu());
+    obj.send_data();
 	return 0;
-	}
+}

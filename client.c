@@ -15,11 +15,6 @@
 #define PORT 8888
 #define MAX_LINE 2048
 
-int max(int a , int b)
-{
-    return a > b ? a : b;
-}
-
 /*readline函数实现*/
 ssize_t readline(int fd, char *vptr, size_t maxlen)
 {
@@ -66,55 +61,6 @@ void str_cli(int sockfd)
         }//if
 
         bzero(sendline , MAX_LINE);
-    }//while
-}
-
-/*采用select的客户端消息处理函数*/
-void str_cli2(FILE* fp , int sockfd)
-{
-    int maxfd = 0;
-    fd_set rset;
-    /*发送和接收缓冲区*/
-    char sendline[MAX_LINE] , recvline[MAX_LINE];
-    while(1)
-    {
-        FD_ZERO(&rset);
-        /*将文件描述符和套接字描述符添加到rset描述符集*/
-        FD_SET(0 , &rset); 
-        FD_SET(sockfd , &rset);
-        if(sockfd > maxfd)
-            maxfd = sockfd;
-        select(maxfd + 1, &rset , NULL , NULL , NULL);
-        printf("maxfd = %d\n", maxfd);
-        if(FD_ISSET(fileno(fp) , &rset))
-        {
-            printf("fileno(fp) = %d\n", fileno(fp));
-            if(fgets(sendline , MAX_LINE , fp) == NULL)
-            {
-                printf("read nothing~\n");
-                close(sockfd); /*all done*/
-                return ;
-            }//if
-            sendline[strlen(sendline) - 1] = '\0';
-            write(sockfd , sendline , strlen(sendline));
-        }//if
-
-        if(FD_ISSET(sockfd , &rset))
-        {
-            printf("sockfd = %d\n", sockfd);
-            if(readline(sockfd , recvline , MAX_LINE) == 0)
-            {
-                
-                perror("handleMsg: server terminated prematurely.\n");
-                exit(1);            
-            }//if
-            
-            if(fputs(recvline , stdout) == EOF)
-            {
-                perror("fputs error");
-                exit(1);
-            }//if
-        }//if   
     }//while
 }
 
