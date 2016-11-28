@@ -2,32 +2,27 @@
 * @Author: anchen
 * @Date:   2016-11-22 14:54:20
 * @Last Modified by:   anchen
-* @Last Modified time: 2016-11-23 14:43:13
+* @Last Modified time: 2016-11-28 18:11:43
 */
 
-#include <iostream>
-#include <stdio.h>
-#include <string>
-#include <sstream> 
+#include <iostream>  
+#include <fstream>  
+#include <stdlib.h>  
 using namespace std;
 
-string int_to_str(int num)
+void save_text_to_file(string text)
 {
-    stringstream ss;  
-    ss<<num;   
-    return ss.str();  
-}
-
-void post(string content)
-{
-    string post_data;
-    int len = content.size();
-    post_data = "POST /mms/mm1 HTTP/1.1\r\nHost: 222.111.555.111\r\nContent-Type: application/vnd.cdma.text-mms-message\r\nContent-length: " + int_to_str(len) + "\r\n\r\n" + content;
+    ofstream file("example.txt");
+    if (file.is_open())
+    {
+        file << text;
+        file.close();
+    }
 }
 
 int main()
 {
-    string a="jkkk";
-    post(a);
+    string kk = "hi i am xxx";
+    save_text_to_file(kk);
     return 0;
 }

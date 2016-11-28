@@ -73,12 +73,18 @@ string Mm1::get_pdu()
     {
         pdu_data += *iter + "\r\n";
     }
+    if(this->text != "")
+    {
+        string mms_body = this->set_mms_body();
+        pdu_data += mms_body;
+    }
     return pdu_data;
 }
 
 Mm1::Mm1(int msg_type)
 {
     this->msg_seq = msg_type;
+    this->text = "";
     switch(msg_type)
     {
         case SUBMIT_REQ:
@@ -156,4 +162,36 @@ Mm1::Mm1(int msg_type)
             this->header["X-MMS-Request-Text"] = "000 Ok";
     }
     this->set_head();
+}
+
+string Mm1::set_mms_body()
+{
+    string run = "python mms_body_build.py";
+    const char *p=run.data();
+    system(p);
+    char buffer[1024]; 
+    string mms_body = ""; 
+    ifstream in("data/mms_body.mms");  
+    if (! in.is_open())  
+    { 
+        cout << "Error opening file"; exit (1); 
+    }  
+    while (!in.eof() )  
+    {  
+        in.getline (buffer,1024);  
+        string temp = buffer;
+        mms_body += temp + "\r\n";
+    }  
+    return mms_body;
+}
+
+void Mm1::set_text(string text)
+{
+    this->text = text;
+    ofstream file("data/text.txt");
+    if (file.is_open())
+    {
+        file << this->text;
+        file.close();
+    }
 }
